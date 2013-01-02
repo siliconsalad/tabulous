@@ -18,7 +18,7 @@ module Tabulous
       @inactive_text_color = '#888'
     end
   end
-  
+
   mattr_accessor :always_render_subtabs
   @@always_render_subtabs = false
 
@@ -36,6 +36,12 @@ module Tabulous
 
   mattr_accessor :tabs_ul_class
   @@tabs_ul_class = nil
+
+  mattr_accessor :subtabs_header_presence
+  @@subtabs_header_presence = false
+
+  mattr_accessor :subtabs_header_class
+  @@subtabs_header_class = ''
 
   mattr_accessor :subtabs_ul_class
   @@subtabs_ul_class = nil

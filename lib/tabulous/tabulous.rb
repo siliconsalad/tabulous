@@ -66,7 +66,7 @@ module Tabulous
     html << (@@html5 ? '</nav>' : '</div>')
     view.raw(html)
   end
-  
+
   def self.render_subtabs(view)
     if @@bootstrap_style_subtabs
       raise TabulousError,
@@ -92,6 +92,11 @@ module Tabulous
       subtabs = tab.subtabs.select{|subtab| subtab.visible?(view)}
     end
     return if subtabs.empty? && !@@always_render_subtabs
+
+    if @@subtabs_header_presence
+      html << render_tab(:text => tab.text(view), :css_class => @@subtabs_header_class)
+    end
+
     for subtab in subtabs
       html << render_tab(:text => subtab.text(view),
                          :path => subtab.path(view),
@@ -107,6 +112,7 @@ module Tabulous
     html = ''
     klass = (options[:active] ? 'active' : 'inactive')
     klass << (options[:enabled] ? ' enabled' : ' disabled')
+    klass << " #{options[:css_class]}" if options[:css_class]
     html << %Q{<li class="#{klass}">}
     if (options[:active] && !@@active_tab_clickable) || options[:enabled] == false
       html << %Q{<span class="tab">#{options[:text]}</span>}
@@ -176,7 +182,7 @@ module Tabulous
       @@tabs << tab
     end
   end
-  
+
   def self.actions=(ary)
     @@actions = {}
     ary.each do |a|
@@ -193,11 +199,11 @@ module Tabulous
       @@actions[controller][action] << tab
     end
   end
-  
+
   def self.main_tabs
     @@tabs.select { |t| !t.subtab? }
   end
-  
+
   def self.active_tab(view)
     controller = view.controller_name.to_sym
     action = view.action_name.to_sym

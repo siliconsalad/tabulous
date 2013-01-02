@@ -1,10 +1,10 @@
 module Tabulous
 
   class Tab
-    
+
     attr_reader :name, :parent
     attr_accessor :subtabs
-    
+
     def initialize(name, text, path, visible, enabled)
       @name = name
       name = name.to_s
@@ -22,28 +22,28 @@ module Tabulous
       @enabled = enabled
       @subtabs = []
     end
-    
+
     def add_parent(tab)
       @parent = tab
       @parent.subtabs = @parent.subtabs + [self]
     end
-    
+
     def subtab?
       @kind == :subtab
     end
-    
+
     def text(view)
       @text
     end
-    
+
     def path(view)
       @path
     end
-    
+
     def visible?(view)
       !!@visible
     end
-    
+
     def enabled?(view)
       !!@enabled
     end
